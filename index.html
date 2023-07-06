@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ads Site</title>
+    <style>
+        body {
+            background-image: url('nord-wallpaper.jpg');
+            background-size: cover;
+            font-family: "PETSCII", sans-serif;
+            font-size: 10px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            background-color: rgba(94, 129, 172, 0.9); /* Updated transparency */
+            color: #fff;
+            border-radius: 10px;
+        }
+
+        th, td {
+            text-align: center;
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        li {
+            float: left;
+            background-color: #2e3440;
+        }
+
+        li a {
+            display: block;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            color: #d08770;
+        }
+
+        li a:hover {
+            background-color: #606d85;
+        }
+
+        .center-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+			margin-left: 50px;
+			margin-right: 50px;
+        }
+
+        .form-box {
+            background-color: #81a1c1;
+            padding: 20px;
+            border-radius: 10px;
+            color: #fff;
+        }
+
+
+        .header {
+            background-color: #8fbcbb;
+            padding: 20px;
+            color: #fff;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        .header h1 {
+            margin: 0;
+        }
+
+        .content {
+            margin: 20px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .content p {
+            font-size: 18px;
+            line-height: 1.5;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: #8fbcbb;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .button:hover {
+            background-color: #a3be8c;
+        }
+
+
+        .footer {
+            background-color: #8fbcbb;
+            padding: 20px;
+            color: #fff;
+            text-align: center;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+  <div class="header">
+    <h1>To have an ad added to this page contact "blueberry_husky" on discord, your ad may take a bit of time to appear, your ad must follow the <a href='guidelines.html'> Ad Guidelines</a></h1>
+  </div>
+  <div class="center-box">
+<table id="adsTable">
+    <tr>
+        <th>Ad Name</th>
+        <th>Description</th>
+        <th>Link</th>
+        <th>Contact</th>
+    </tr>
+</table>
+
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        fetch('ads.csv')
+            .then(response => response.text())
+            .then(data => {
+                const lines = data.split('\n');
+                const table = document.getElementById('adsTable');
+                lines.forEach(line => {
+                    const columns = line.split(',');
+                    const row = document.createElement('tr');
+                    columns.forEach((column, index) => {
+                        const cell = document.createElement('td');
+                        const content = column.trim();
+                        if (index === 2 && isValidURL(content)) {
+                            const link = document.createElement('a');
+                            link.href = content;
+                            link.textContent = content;
+                            cell.appendChild(link);
+                        } else {
+                            cell.textContent = content;
+                        }
+                        row.appendChild(cell);
+                    });
+                    table.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+
+    function isValidURL(string) {
+        try {
+            new URL(string);
+            return true;
+        } catch (_) {
+            return false;
+        }
+    }
+</script>
+</body>
+</html>
